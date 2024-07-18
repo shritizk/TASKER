@@ -32,4 +32,4 @@
     -> make sure crud are syncing with backend properly 
     -> make sure components reder properly 
     -> do basic optimization  
-    -> do designing 
+    -> do designing .
