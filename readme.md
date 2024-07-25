@@ -18,15 +18,15 @@
 ##error codes 
 401 = data base eroors 
 
-## back end  -> 16-07-2024  to 
-    -> create base db -> 16-07-2024 
-    -> crud appis ->
-        // get 
-        -> created basic get at 16-07-2024 done ( also done with genral errors )
-        -> next step is to connect it with mongoDB 
-        // done with crud for tasker --> 17/07/2024
-    -> test apis ->
-    
+## back end  -> 
+#task
+    crud done 
+#user
+    api to create : 
+        ->login  done
+        ->sighup done
+        ->update done 
+
 ## front end 
     -> make a blue print of how vdom will work 
     -> make sure crud are syncing with backend properly 

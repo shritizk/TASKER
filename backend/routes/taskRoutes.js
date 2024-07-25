@@ -23,23 +23,32 @@ router.get("/gettask",async function(req,res){
 
 });
 //post
-router.post('/uploadtask',async function(req,res){
+router.post('/addtask',async function(req,res){
     // db schema 
     // date :  Date , 
     // title : String ,
     // description: String ,
     // status : Boolean
     const payloaddata = req.body;
+   
+    const date = new Date().toLocaleDateString() 
+
     try { 
+        
         await taskDB.create({
-            date : payloaddata.date  ,
+            date :  date ,
             title : payloaddata.title , 
             description : payloaddata.description 
-        });
-        return res.status(200)
-    }catch{
+        })
+        
+       
+        return res.status(200).json({
+            msg : "created"
+        })
+    }catch(e){
+        console.log(e)
         return res.status(401).json({
-            msg : "something went wrong!!"
+            msg : " something went wrong "
         })
     }
 });
