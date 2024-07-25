@@ -1,8 +1,20 @@
-# React + Vite
+## front end task
+    create a home page 
+        - user will login 
+            - login form that sends data to backend login
+                -after user is logged in , it will redirect it to feed 
+            - should have a sighup button 
+                - if sighup button clicked , open sighup page 
+                - this sighup should have a input validation for on change 
+        - if user is logged in , it will look at a todo feed
+            - all these task should be done with auth for better security  
+                 - a btn to add task 
+                 - delete task 
+                 - update task 
+            
+        
+    
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+    

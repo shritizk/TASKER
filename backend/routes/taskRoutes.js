@@ -1,7 +1,7 @@
 const {Router} = require("express");
 const { taskDB } = require("../db/taskDb");
 const router = Router();
-
+const { jwtVerify } = require('../auth/jwtVerify');
 
 
 
@@ -9,9 +9,12 @@ const router = Router();
 //"http://localhost:3000/home/taskList"
 // tested DONE 
 //get 
-router.get("/gettask",async function(req,res){
+router.get("/gettask",jwtVerify,async function(req,res){
+    const payload = req.cookies.token.data;
+
+
     try{
-        const payloaddata = await taskDB.find({});
+        const payloaddata = await taskDB.find({email : payload.email});
     return res.status(200).json({
         tasklist : payloaddata
     });
@@ -23,19 +26,20 @@ router.get("/gettask",async function(req,res){
 
 });
 //post
-router.post('/addtask',async function(req,res){
+router.post('/addtask',jwtVerify,async function(req,res){
     // db schema 
     // date :  Date , 
     // title : String ,
     // description: String ,
     // status : Boolean
     const payloaddata = req.body;
-   
+    const payload = req.cookies.token.data;
     const date = new Date().toLocaleDateString() 
 
     try { 
         
         await taskDB.create({
+            email : payload.emaol ,
             date :  date ,
             title : payloaddata.title , 
             description : payloaddata.description 
@@ -53,13 +57,13 @@ router.post('/addtask',async function(req,res){
     }
 });
 //put 
-router.put('/updatetask',async function(req,res){
-    // change status from false to true 
-    const payloaddata = req.body._id; // might need to chane _id to something else will check it when testing 
-    
+router.put('/updatetask',jwtVerify,async function(req,res){
+    // change status from false to true
+    const payload = req.cookies.token.data;
+    const taskid = req.body._id
     try { 
         await taskDB.findAndUpdateOne({
-            _id : payloaddata
+            email : payload.email  ,_id : taskid 
         },{
             status  : true 
         });    

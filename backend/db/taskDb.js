@@ -4,6 +4,7 @@ const URL = process.env.URL;
 mongoose.connect(process.env.URL);
 
 const taskSchema = mongoose.Schema({
+    email : String,
     date :  String , 
     title : String ,
     description: String ,

@@ -66,18 +66,14 @@ router.get('/login',async function(req,res){
         if(err){
             return res.status(404).json({
                 msg : "password incorrect!!!"
-            })
-        }
+            })}
 
         // provide a jwt 
         // send back  a jwt
         const token = jwt.sign({
             data : payLoad , 
-            session : {
-                status : true , 
-                time : new Date()
-            }},SecretKey )
-        return cookie(token)
+            },SecretKey )
+        return res.cookie("token" , token ,{ HttpOnly: true , secure: true , maxAge : 24 * 60 * 1000});
     });
        
 });
@@ -101,3 +97,9 @@ router.post("/updateUseremail",jwtVerify,async function(req,res){
     })
 
 })
+
+
+
+module.exports = {
+    userRoutes : router
+}
