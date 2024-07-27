@@ -9,20 +9,20 @@ const { jwtVerify } = require('../auth/jwtVerify');
 //"http://localhost:3000/home/taskList"
 // tested DONE 
 //get 
-router.get("/gettask",jwtVerify,async function(req,res){
+router.get("/gettask",async function(req,res){
     const payload = req.cookies.token.data;
-
-
-    try{
-        const payloaddata = await taskDB.find({email : payload.email});
-    return res.status(200).json({
-        tasklist : payloaddata
-    });
-    }catch{
-        return res.status(401).json({
-            msg : "something wrong with db can not get data !!"
-        })
-    }
+    
+    return res.send("hello")
+    // try{
+    //     const payloaddata = await taskDB.find({email : payload.email});
+    // return res.status(200).json({
+    //     tasklist : payloaddata
+    // });
+    // }catch{
+    //     return res.status(401).json({
+    //         msg : "something wrong with db can not get data !!"
+    //     })
+    // }
 
 });
 //post

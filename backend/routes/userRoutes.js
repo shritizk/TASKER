@@ -2,7 +2,7 @@ const {Router} = require('express');
 const { userDb } = require('../db/userDb');
 const router = Router();
 const jwt = require('jsonwebtoken');
-const cookie = require('cookie-parser');
+const bcrypt = require('bcryptjs');
 const { jwtVerify } = require('../auth/jwtVerify');
 const SecretKey = process.env.SecretKey;
 
@@ -10,6 +10,7 @@ const SecretKey = process.env.SecretKey;
 
 //signup
 router.post('/signup',async function(req,res){
+   
     const payLoad = req.body;
     // user data base format 
     // name : String , 
@@ -21,25 +22,28 @@ router.post('/signup',async function(req,res){
     // } 
 
     // check if email already exist in db
-    if(await userDb.find({email : payLoad.email})){
+    const searchResult = await userDb.exists({email : payLoad.email})
+    if(searchResult){
         return res.status(404).json({
             status : 404 , 
             msg : "email already exist !!"
         })
     }
-
-    await userDb.create({
+    
+    try{
+        const password = bcrypt.hashSync(payLoad.password , 10) ;
+        await userDb.create({
         name : payLoad.name , 
         email : payLoad.email , 
-        password : bcrypt.hash(payLoad.password, 10) , 
+        password : password , 
         location : payLoad.location 
-    }).catch(()=>{
+    })}
+    catch(e){
+        console.log(e);
         return res.status(401).json({
-            status : false , 
-            msg : "can not create user right now!!"
-        })
-    });
-
+        status : false , 
+        msg : "can not create user right now!!"
+    }) } 
 
     return res.status(200).json({
         status : true , 
@@ -51,32 +55,33 @@ router.post('/signup',async function(req,res){
 //login
 router.get('/login',async function(req,res){
     const payLoad = req.body;
-    const userData = await userDb.find({email : payLoad.email}).catch((e)=>{
-        return res.status(404).json({
+    if(!userDb.exists({email : payLoad.email})){
+        return res.json(404).json({
             status : false , 
-            msg : "emai not found !!!"
+            msg : "user does not exits!!!"
         })
-    })
-    
-
-    
+    }
+    const userData = await userDb.find({email : payLoad.email});
     // check for password if its correct 
-            
-    bcrypt.compare(payLoad.password, userData.password, function(err, result) {
-        if(err){
+    console.log(userData[0].password);
+    const passwordResult = bcrypt.compareSync(payLoad.password, userData[0].password );
+        if(!passwordResult){
+        
             return res.status(404).json({
                 msg : "password incorrect!!!"
             })}
 
         // provide a jwt 
         // send back  a jwt
+        
         const token = jwt.sign({
             data : payLoad , 
             },SecretKey )
+        
         return res.cookie("token" , token ,{ HttpOnly: true , secure: true , maxAge : 24 * 60 * 1000});
     });
        
-});
+
 
 
 
@@ -87,7 +92,7 @@ router.post("/updateUseremail",jwtVerify,async function(req,res){
     await userDb.findOneAndUpdate({email : payLoad.email},{
         name : payLoad.name , 
         email : payLoad.email , 
-        password : bcrypt.hash(payLoad.password, 10) , 
+        password : bcrypt.hashSync(payLoad.password, 10) , 
         location : payLoad.location
     })
 
@@ -101,5 +106,5 @@ router.post("/updateUseremail",jwtVerify,async function(req,res){
 
 
 module.exports = {
-    userRoutes : router
+    router
 }
