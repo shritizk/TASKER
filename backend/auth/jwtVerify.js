@@ -1,8 +1,13 @@
 require('dotenv').config();
 const SecretKey = process.env.SecretKey;
 const jwt = require('jsonwebtoken');
+
+
+
+
 function jwtVerify(req,res,next){
     const cookie = req.cookie.token.data;
+    // cookie in front end for user genral data and jwt token name is data .    
     if(jwt.verify(cookie,SecretKey)){
         return next()
     }else{

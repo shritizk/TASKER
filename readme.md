@@ -20,16 +20,21 @@
 
 ## back end  -> 
 #task
-    crud done 
-#user
-    api to create : 
-        ->login  done
-        ->sighup done
-        ->update done 
+    - get - tested 
+    -post - tested 
+    -delete - tested
+    -update - yet to be tested 
+#user api all tested 
 
-## front end 
-    -> make a blue print of how vdom will work 
-    -> make sure crud are syncing with backend properly 
-    -> make sure components reder properly 
-    -> do basic optimization  
-    -> do designing .
+
+
+
+
+## front end - jwtVerification wil be done with this only 
+- Make a sighup first 
+- make a login 
+- make a add task 
+- make a get task 
+- make a btn to update task 
+- make a btn to delete it 
+
